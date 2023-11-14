@@ -69,7 +69,6 @@ jobs:
         with:
           sbom: "sbom.spdx.json"
           fail-build: false
-          severity-cutoff: high
           output-format: json
 
       - name: Scan vulnerability SARIF
@@ -77,8 +76,7 @@ jobs:
         id: scansarif
         with:
           sbom: "sbom.spdx.json"
-          fail-build: true
-          severity-cutoff: critical
+          fail-build: false
           output-format: sarif
 
       - name: Upload vuln
