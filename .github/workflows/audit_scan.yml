@@ -1,0 +1,30 @@
+name: Audit Scan
+
+on:
+  workflow_call:
+    inputs:
+      path:
+        required: true
+        type: string
+
+jobs:
+  build:
+    name: Audit Scan
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Audit Scan
+        id: scan
+        run: gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/mortarco/${{ inputs.path }}/code-scanning/alerts > scan.json
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Scan Result
+        uses: actions/upload-artifact@v1
+        with: 
+          name: scan
+          path: scan.json

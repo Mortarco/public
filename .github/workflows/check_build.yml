@@ -1,0 +1,19 @@
+name: Build
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  security:
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    uses: ./.github/workflows/security.yml
+    with:
+      name: sample
+      path: PublicPJ
+      binary: target/sample-1.0.0-SNAPSHOT.jar

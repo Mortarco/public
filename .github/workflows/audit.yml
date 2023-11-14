@@ -1,0 +1,16 @@
+name: Audit
+
+on:
+  workflow_call:
+    inputs:
+      path:
+        required: true
+        type: string
+
+jobs:
+  Audit Scan:
+    uses: ./.github/workflows/audit_scan.yml
+    with:
+      path: ${{ inputs.path }}
+
+

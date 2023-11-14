@@ -1,0 +1,17 @@
+name: Deploy
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  security:
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    uses: ./.github/workflows/audit.yml
+    with:
+      path: ${{ inputs.path }}
