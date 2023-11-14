@@ -14,4 +14,4 @@ jobs:
       security-events: write
     uses: ./.github/workflows/audit.yml
     with:
-      path: PublicPJ
+      repo: public
