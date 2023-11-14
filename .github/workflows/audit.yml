@@ -3,7 +3,7 @@ name: Audit
 on:
   workflow_call:
     inputs:
-      path:
+      repo:
         required: true
         type: string
 
@@ -11,6 +11,6 @@ jobs:
   scan-result:
     uses: ./.github/workflows/audit_scan.yml
     with:
-      path: ${{ inputs.path }}
+      repo: ${{ inputs.repo }}
 
 
