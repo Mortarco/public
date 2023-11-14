@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Audit Scan
         id: scan
-        run: "gh api -H \"Accept: application/vnd.github+json\" -H \"X-GitHub-Api-Version: 2022-11-28\" /repos/mortarco/${{ inputs.path }}/code-scanning/alerts > scan.json"
+        run: "gh api -H \"Accept: application/vnd.github+json\" -H \"X-GitHub-Api-Version: 2022-11-28\" /repos/Mortarco/${{ inputs.path }}/code-scanning/alerts > scan.json"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
