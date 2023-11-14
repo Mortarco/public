@@ -8,7 +8,7 @@ on:
         type: string
 
 jobs:
-  Audit Scan:
+  scan-result:
     uses: ./.github/workflows/audit_scan.yml
     with:
       path: ${{ inputs.path }}
