@@ -1,0 +1,83 @@
+name: Vuln
+
+on:
+  workflow_call:
+    inputs:
+      name:
+        required: true
+        type: string
+      path:
+        required: true
+        type: string
+      binary:
+        required: true
+        type: string
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: '17.0.4'
+
+      - name: Build
+        run: >
+          mvn clean install
+          site -DgenerateReports=false
+          surefire-report:report
+        working-directory: ./${{ inputs.path }}
+
+      - name: copy file
+        uses: canastro/copy-file-action@master
+        with:
+          source: ${{ inputs.path }}/${{ inputs.binary }}
+          target: ${{ inputs.path }}/docker/
+
+      - name: Setup Docker
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver-opts: network=host
+      - name: build
+        uses: docker/build-push-action@v5
+        with:
+          context: ./${{ inputs.path }}/docker/
+          push: true
+          tags: localhost:5000/${{ inputs.name }}:latest
+          
+      - name: Generate sbom
+        uses: anchore/sbom-action@v0.14.1
+        with:
+          image: localhost:5000/${{ inputs.name }}:latest
+          format: spdx-json
+          output-file: "sbom.spdx.json"
+          artifact-name: sbom.spdx
+
+      - name: Scan vulnerability
+        uses: anchore/scan-action@v3
+        id: scan
+        with:
+          sbom: "sbom.spdx.json"
+          fail-build: false
+          severity-cutoff: high
+          output-format: json
+
+      - name: Upload vuln
+        uses: actions/upload-artifact@v1
+        with: 
+          name: vuln
+          path: ${{ steps.scan.outputs.json }}
+
+#      - name: upload SARIF report
+#        uses: github/codeql-action/upload-sarif@v2
+#        with:
+#          sarif_file: ${{ steps.scan.outputs.sarif }}
