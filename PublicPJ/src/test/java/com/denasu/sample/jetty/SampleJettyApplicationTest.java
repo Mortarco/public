@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootTest
 public class SampleJettyApplicationTest
-{
+{ 
     @Autowired
     private RestTemplate restTemplate;
     @Test
