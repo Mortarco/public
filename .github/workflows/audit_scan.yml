@@ -33,5 +33,5 @@ jobs:
         run: |
           count=$(cat scan.json | jq '.[] | select(.state == "open" and .rule.security_severity_level == "critical")' | jq -s .|jq length)
           if [ $count -ne 0 ] ; then
-            echo '$count vulnerability found' ; exit 1
+            echo $count vulnerability found ; exit 1
           fi
