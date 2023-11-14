@@ -15,5 +15,5 @@ jobs:
     uses: ./.github/workflows/security.yml
     with:
       name: sample
-      path: PrivatePJ
+      path: PublicPJ
       binary: target/sample-1.0.0-SNAPSHOT.jar
