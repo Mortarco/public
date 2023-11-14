@@ -19,6 +19,9 @@ jobs:
     with:
       path: ${{ inputs.path }}
 
+  sast:
+    uses: ./.github/workflows/sast.yml
+
   vuln:
     uses: ./.github/workflows/vuln.yml
     with:
