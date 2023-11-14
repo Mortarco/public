@@ -14,10 +14,10 @@ on:
         type: string
 
 jobs:
-#  unit-test:
-#    uses: ./.github/workflows/unittest.yml
-#    with:
-#      path: ${{ inputs.path }}
+  unit-test:
+    uses: ./.github/workflows/unittest.yml
+    with:
+      path: ${{ inputs.path }}
 
   vuln:
     uses: ./.github/workflows/vuln.yml
