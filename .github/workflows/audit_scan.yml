@@ -28,3 +28,10 @@ jobs:
         with: 
           name: scan
           path: scan.json
+
+      - name: Count Vuln
+        run: count=$(cat scan.json | jq '.[] | select(.state == "open" and .rule.security_severity_level == "critical")' | jq -s .|jq length)
+      - name: Vuln Gate
+        if: ${{ count }} != 0
+        run: echo '$count vulnerability found' ; exit 1
+
