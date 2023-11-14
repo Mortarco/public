@@ -63,22 +63,31 @@ jobs:
           output-file: "sbom.spdx.json"
           artifact-name: sbom.spdx
 
-      - name: Scan vulnerability
+      - name: Scan vulnerability JSON
         uses: anchore/scan-action@v3
-        id: scan
+        id: scanjson
         with:
           sbom: "sbom.spdx.json"
           fail-build: false
           severity-cutoff: high
           output-format: json
 
+      - name: Scan vulnerability SARIF
+        uses: anchore/scan-action@v3
+        id: scansarif
+        with:
+          sbom: "sbom.spdx.json"
+          fail-build: false
+          severity-cutoff: high
+          output-format: sarif
+
       - name: Upload vuln
         uses: actions/upload-artifact@v1
         with: 
           name: vuln
-          path: ${{ steps.scan.outputs.json }}
+          path: ${{ steps.scanjson.outputs.json }}
 
       - name: upload SARIF report
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: ${{ steps.scan.outputs.sarif }}
+          sarif_file: ${{ steps.scansarif.outputs.sarif }}
