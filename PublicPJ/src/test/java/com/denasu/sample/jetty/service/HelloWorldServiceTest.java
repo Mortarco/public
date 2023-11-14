@@ -9,7 +9,7 @@ public class HelloWorldServiceTest
 	@Test
     public void checkMessage() throws Exception
     {
-		HelloWorldService service = new HelloWorldService();
+		HelloWorldService service = new HelloWorldService();　
 		assertThat(service.getHelloMessage()).isEqualTo("Test Message");
     }
 }
