@@ -24,6 +24,6 @@ public class HelloWorldService {
 	public String getHelloMessage()
 	{
 
-		return "Test Message";
+		return  "Test Message";
 	}
 }
