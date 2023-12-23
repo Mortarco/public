@@ -40,7 +40,21 @@ jobs:
         surefire-report:report
       working-directory: ./PublicPJ
 
+    #- name: Perform CodeQL Analysis
+    #  uses: github/codeql-action/analyze@v2
+    #  with:
+    #    category: "/language:${{matrix.language}}"
+
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
+      id: sast
       with:
         category: "/language:${{matrix.language}}"
+        upload-database: false
+
+    - name: Upload sast
+      uses: actions/upload-artifact@v1
+      with: 
+        name: sast
+        path: ${{ steps.sast.outputs.sarif-output }}
+
